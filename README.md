@@ -7,7 +7,7 @@ Imagine a rap star, a dance star, and a basketball star came together in one sin
 
 **Codebase**
 -----
-This repository includes code to run the UR3 robot on the simulation software Gazebo. 
+This repository includes code to run the humanoid robot with basketball on the simulation software Gazebo. 
 
 Group Members
 -----
