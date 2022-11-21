@@ -1,0 +1,2 @@
+gazebo_tutorials:rrbot_control:rrbot_description:rrbot_gazebo
+-DCATKIN_DEVEL_PREFIX=/home/ur3/IKUN/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/ur3/IKUN/catkin_ws/install -G Unix Makefiles
