@@ -1,0 +1,2 @@
+CXK:cxk_gazebo
+-DCATKIN_DEVEL_PREFIX=/home/ur3/ece470/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/ur3/ece470/catkin_ws/install -G Unix Makefiles

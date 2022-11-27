@@ -1,0 +1,8 @@
+prefix=/home/ur3/ece470/catkin_ws/install
+
+Name: CXK
+Description: Description of CXK
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

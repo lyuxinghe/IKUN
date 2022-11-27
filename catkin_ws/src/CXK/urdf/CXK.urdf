@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="CXK">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.0096906359307081 -0.119230223286247 0.00423816783955729"
+        rpy="0 0 0" />
+      <mass
+        value="46.4693532291852" />
+      <inertia
+        ixx="0.763195276593007"
+        ixy="-0.00673885543272561"
+        ixz="0.00604785713409767"
+        iyy="0.415985895055809"
+        iyz="0.00346026010909751"
+        izz="0.647103500278198" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Right Arm">
+    <inertial>
+      <origin
+        xyz="0.141730685922207 -0.0222861774359908 -0.105387373001325"
+        rpy="0 0 0" />
+      <mass
+        value="3.87882938407095" />
+      <inertia
+        ixx="0.0150865071955374"
+        ixy="0.00296045821277516"
+        ixz="0.0130885879007677"
+        iyy="0.0325546121707547"
+        iyz="-0.002785714829328"
+        izz="0.0224629129770535" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Right Arm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.890196078431372 0.796078431372549 0.725490196078431 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Right Arm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Right Arm"
+    type="revolute">
+    <origin
+      xyz="0.0089253 -0.24473 -0.19848"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Right Arm" />
+    <axis
+      xyz="0.13534 -0.99062 0.018772" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Left Arm">
+    <inertial>
+      <origin
+        xyz="0.00841896960121909 0.0246325818836685 -0.143713372582989"
+        rpy="0 0 0" />
+      <mass
+        value="3.87883754839522" />
+      <inertia
+        ixx="0.0240120449974015"
+        ixy="0.000457521831265598"
+        ixz="-0.00240602045351263"
+        iyy="0.0326188180033286"
+        iyz="0.00385220123260758"
+        izz="0.0134721370149799" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Left Arm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.890196078431372 0.796078431372549 0.725490196078431 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Left Arm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Left Arm"
+    type="revolute">
+    <origin
+      xyz="-0.046605 -0.23703 0.20799"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Left Arm" />
+    <axis
+      xyz="0.13534 -0.99062 0.018772" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Right Wrist">
+    <inertial>
+      <origin
+        xyz="0.0438046010275084 -0.0237298059579416 -0.0281790568772649"
+        rpy="0 0 0" />
+      <mass
+        value="0.370949422279241" />
+      <inertia
+        ixx="0.000502679257816968"
+        ixy="0.000214867345237206"
+        ixz="0.000197994973854303"
+        iyy="0.000816961920382485"
+        iyz="-0.00019985115907963"
+        izz="0.000734262428988496" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Right Wrist.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.890196078431372 0.796078431372549 0.725490196078431 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Right Wrist.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Right Wrist"
+    type="revolute">
+    <origin
+      xyz="0.43653 0.057937 -0.24142"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Right Wrist" />
+    <axis
+      xyz="0.68852 0.22009 0.69101" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Left Wrist">
+    <inertial>
+      <origin
+        xyz="0.0529812429972789 -0.00950698668230093 -0.0194572674144713"
+        rpy="0 0 0" />
+      <mass
+        value="0.370956459386234" />
+      <inertia
+        ixx="0.000331857399233709"
+        ixy="9.83533368802752E-05"
+        ixz="0.000193728895541193"
+        iyy="0.000967283804457599"
+        iyz="-3.5172494746672E-06"
+        izz="0.000754776270149611" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Left Wrist.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.890196078431372 0.796078431372549 0.725490196078431 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Left Wrist.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Left Wrist"
+    type="revolute">
+    <origin
+      xyz="0.16127 0.093377 0.26719"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Left Wrist" />
+    <axis
+      xyz="-0.41354 0.11802 -0.9028" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Right Leg">
+    <inertial>
+      <origin
+        xyz="0.0113262065511052 0.000508450830415771 -0.248789441916006"
+        rpy="0 0 0" />
+      <mass
+        value="14.688833963221" />
+      <inertia
+        ixx="0.263719446054451"
+        ixy="0.00453056227776077"
+        ixz="0.0179851508249944"
+        iyy="0.276687347195287"
+        iyz="-0.00197972851877833"
+        izz="0.0462280543799564" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Right Leg.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.850980392156863 0.850980392156863 0.850980392156863 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Right Leg.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Right Leg"
+    type="revolute">
+    <origin
+      xyz="-0.031818 0.28547 -0.09061"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Right Leg" />
+    <axis
+      xyz="-0.024521 -0.99969 -0.0033999" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="Left Leg">
+    <inertial>
+      <origin
+        xyz="0.0328065643145384 -0.000517985790271805 -0.24818918626528"
+        rpy="0 0 0" />
+      <mass
+        value="14.6891452512572" />
+      <inertia
+        ixx="0.260509504537438"
+        ixy="-0.00465115806191828"
+        ixz="0.0356351196060873"
+        iyy="0.276698432317449"
+        iyz="0.00173169983368748"
+        izz="0.049449515430337" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Left Leg.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.850980392156863 0.850980392156863 0.850980392156863 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://CXK/meshes/Left Leg.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Left Leg"
+    type="revolute">
+    <origin
+      xyz="-0.0273729614468192 0.284851190706178 0.0906115873139835"
+      rpy="1.5707963267949 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Left Leg" />
+    <axis
+      xyz="-0.0245205207072278 -0.999693545268882 -0.00339994293788359" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+</robot>
