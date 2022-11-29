@@ -12,6 +12,35 @@
       <uri>model://sun</uri>
     </include>
 
+    <!-- Tables -->
+    <include>
+      <uri>model://table</uri>
+      <name>table1</name>
+      <static>true</static>
+      <pose>0.0 -0.8 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://table</uri>
+      <name>table2</name>
+      <static>true</static>
+      <pose>0.0 0.8 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://table</uri>
+      <name>table3</name>
+      <static>true</static>
+      <pose>1.2 0 0 0 0 1.570796</pose>
+    </include>
+
+    <include>
+      <uri>model://table</uri>
+      <name>table4</name>
+      <static>true</static>
+      <pose>-1.2 0 0 0 0 1.570796</pose>
+    </include>
+    
     <!-- Focus camera on tall pendulum -->
     <gui fullscreen='0'>
       <camera name='user_camera'>
