@@ -41,6 +41,35 @@
       <pose>-1.2 0 0 0 0 1.570796</pose>
     </include>
     
+    <!-- Target -->
+    <include>
+      <uri>model://box_target_green</uri>
+      <name>btg1</name>
+      <static>true</static>
+      <pose>6 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://box_target_green</uri>
+      <name>btg2</name>
+      <static>true</static>
+      <pose>-6 0 0 0 0 3.141592</pose>
+    </include>
+
+    <include>
+      <uri>model://box_target_red</uri>
+      <name>btr1</name>
+      <static>true</static>
+      <pose>0 6 0 0 0 -1.570796</pose>
+    </include>
+
+    <include>
+      <uri>model://box_target_red</uri>
+      <name>btr2</name>
+      <static>true</static>
+      <pose>0 -6 0 0 0 1.570796</pose>
+    </include>
+    
     <!-- Focus camera on tall pendulum -->
     <gui fullscreen='0'>
       <camera name='user_camera'>
