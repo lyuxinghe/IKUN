@@ -177,17 +177,28 @@ class ImageConverter:
         self.bridge = CvBridge()
         self.image_pub = rospy.Publisher("/image_converter/output_video", Image, queue_size=10)
         self.image_sub = rospy.Subscriber("/cv_camera_node/image_raw", Image, self.image_callback)
+        self.image_sub = rospy.Subscriber("/cv_camera_node/camera_info", CameraInfo, self.camera_info_callback)
+
         self.loop_rate = rospy.Rate(SPIN_RATE)
 
         # Check if ROS is ready for operation
         while(rospy.is_shutdown()):
             print("ROS is shutdown!")
 
+    def camera_info_callback(self, data):
+        global P
+
+        img_height = data.height
+        img_width = data.width
+
+        P = data.P
+        print(data)
+        
 
     def image_callback(self, data):
 
         global xw_yw_G # store found green blocks in this list
-        global xw_yw_Y # store found yellow blocks in this list
+        global xw_yw_R # store found yellow blocks in this list
 
         try:
           # Convert ROS image to OpenCV image
@@ -208,9 +219,8 @@ class ImageConverter:
         # do coordinate transformation in the blob_search() function, namely, from
         # the image frame to the global world frame.
 
-        #xw_yw_G = blob_search(cv_image, "green")
-        #xw_yw_Y = blob_search(cv_image, "yellow")
-        blob_search(cv_image, "img")
+        xw_yw_R = blob_search(cv_image, "red", P)
+        xw_yw_G = blob_search(cv_image, "green", P)
 
 def main():
 

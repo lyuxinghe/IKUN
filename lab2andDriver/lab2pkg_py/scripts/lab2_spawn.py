@@ -39,11 +39,11 @@ if __name__ == '__main__':
     # Get path to block
     ur_path = rospack.get_path('ur_description')
     block_path = os.path.join(ur_path, 'urdf', 'block.urdf')
-    block1_path = os.path.join(ur_path, 'urdf', 'block_red.urdf')
+    block1_path = os.path.join(ur_path, 'urdf', 'block_white.urdf')
     block2_path = os.path.join(ur_path, 'urdf', 'block_yellow.urdf')
     block3_path = os.path.join(ur_path, 'urdf', 'block_green.urdf')
     block4_path = os.path.join(ur_path, 'urdf', 'block_black.urdf')
-    block5_path = os.path.join(ur_path, 'urdf', 'block_white.urdf')
+    block5_path = os.path.join(ur_path, 'urdf', 'block_red.urdf')
     block_paths = [block1_path, block2_path, block3_path, block4_path, block5_path]
     # Wait for service to start
     rospy.wait_for_service('gazebo/spawn_urdf_model')
@@ -73,6 +73,17 @@ if __name__ == '__main__':
         
     missing_block = (missing_block == 'y')
 
+    block_name = 'block1'
+    pose = Pose(Point(block_xy_pos[starting_location][0][0],
+                        block_xy_pos[starting_location][0][1], 0), Quaternion(0, 0, 0, 0))
+    spawn(block_name, open(block5_path, 'r').read(), 'block', pose, 'world')
+
+    block_name = 'block2'
+    pose = Pose(Point(block_xy_pos[starting_location][1][0],
+                        block_xy_pos[starting_location][1][1], 0), Quaternion(0, 0, 0, 0))
+    spawn(block_name, open(block3_path, 'r').read(), 'block', pose, 'world')
+
+'''
     # Delete previous blocks
     for height in range(5):
         block_name = 'block' + str(height + 1)
@@ -99,4 +110,4 @@ if __name__ == '__main__':
             pose = Pose(Point(block_xy_pos[starting_location][height][0], 
                             block_xy_pos[starting_location][height][1], 0), Quaternion(0, 0, 0, 0))
             spawn(block_name, open(block_paths[4-height], 'r').read(), 'block', pose, 'world')
-
+'''
