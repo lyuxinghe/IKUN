@@ -16,6 +16,8 @@ import numpy as np
 import yaml
 import sys
 from lab2_header import *
+from blob_search import *
+from lab2_func import *
 
 # 20Hz
 SPIN_RATE = 20
@@ -39,17 +41,6 @@ current_position_set = False
 
 Q = None
 
-############## Your Code Start Here ##############
-
-"""
-TODO: define a ROS topic callback funtion for getting the state of suction cup
-Whenever ur3/gripper_input publishes info this callback function is called.
-"""
-
-
-
-
-############### Your Code End Here ###############
 
 
 """
@@ -165,7 +156,6 @@ def move_arm(pub_cmd, loop_rate, dest, vel, accel):
     return error
 
 
-############## Your Code Start Here ##############
 
 def move_block(pub_cmd, loop_rate, start_loc, start_height, \
                end_loc, end_height):
@@ -180,8 +170,47 @@ def move_block(pub_cmd, loop_rate, start_loc, start_height, \
     return error
 
 
-############### Your Code End Here ###############
+class ImageConverter:
 
+    def __init__(self, SPIN_RATE):
+
+        self.bridge = CvBridge()
+        self.image_pub = rospy.Publisher("/image_converter/output_video", Image, queue_size=10)
+        self.image_sub = rospy.Subscriber("/cv_camera_node/image_raw", Image, self.image_callback)
+        self.loop_rate = rospy.Rate(SPIN_RATE)
+
+        # Check if ROS is ready for operation
+        while(rospy.is_shutdown()):
+            print("ROS is shutdown!")
+
+
+    def image_callback(self, data):
+
+        global xw_yw_G # store found green blocks in this list
+        global xw_yw_Y # store found yellow blocks in this list
+
+        try:
+          # Convert ROS image to OpenCV image
+            raw_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        except CvBridgeError as e:
+            print(e)
+
+        cv_image = cv2.flip(raw_image, -1)
+        #cv2.line(cv_image, (0,50), (640,50), (0,0,0), 5)
+
+        # You will need to call blob_search() function to find centers of green blocks
+        # and yellow blocks, and store the centers in xw_yw_G & xw_yw_Y respectively.
+
+        # If no blocks are found for a particular color, you can return an empty list,
+        # to xw_yw_G or xw_yw_Y.
+
+        # Remember, xw_yw_G & xw_yw_Y are in global coordinates, which means you will
+        # do coordinate transformation in the blob_search() function, namely, from
+        # the image frame to the global world frame.
+
+        #xw_yw_G = blob_search(cv_image, "green")
+        #xw_yw_Y = blob_search(cv_image, "yellow")
+        blob_search(cv_image, "img")
 
 def main():
 
@@ -252,82 +281,33 @@ def main():
     # each time data is published
     sub_position = rospy.Subscriber('ur3/position', position, position_callback)
 
-    ############## Your Code Start Here ##############
-    # TODO: define a ROS subscriber for ur3/gripper_input message and corresponding callback function
+    ic = ImageConverter(SPIN_RATE)
+    time.sleep(5)
+
+    dest = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+    xWgrip = input("Please input xWgrip:")
+    yWgrip = input("Please input yWgrip:")
+    zWgrip = input("Please input zWgrip:")
+    yaw_WgripDegree = input("Please input yaw_WgripDegree:")
 
 
-
-
-
-    ############### Your Code End Here ###############
-
-
-    ############## Your Code Start Here ##############
-    # TODO: modify the code below so that program can get user input
-
-    input_done = 0
-    loop_count = 0
-
-    while(not input_done):
-        input_string = raw_input("Enter number of loops <Either 1 2 3 or 0 to quit> ")
-        print("You entered " + input_string + "\n")
-
-        if(int(input_string) == 1):
-            input_done = 1
-            loop_count = 1
-        elif (int(input_string) == 2):
-            input_done = 1
-            loop_count = 2
-        elif (int(input_string) == 3):
-            input_done = 1
-            loop_count = 3
-        elif (int(input_string) == 0):
-            print("Quitting... ")
-            sys.exit()
-        else:
-            print("Please just enter the character 1 2 3 or 0 to quit \n\n")
-
-
-
-
-
-    ############### Your Code End Here ###############
+    dest = lab_invk(float(xWgrip), float(yWgrip), float(zWgrip), float(yaw_WgripDegree))
+	
+    vel = 4.0
+    accel = 4.0
 
     # Check if ROS is ready for operation
     while(rospy.is_shutdown()):
         print("ROS is shutdown!")
 
-    rospy.loginfo("Sending Goals ...")
-
+    # Initialize the rate to publish to ur3/command
     loop_rate = rospy.Rate(SPIN_RATE)
 
-    ############## Your Code Start Here ##############
-    # TODO: modify the code so that UR3 can move tower accordingly from user input
+    move_arm(pub_command, loop_rate, dest, vel, accel) 
 
-    while(loop_count > 0):
-
-        move_arm(pub_command, loop_rate, home, 4.0, 4.0)
-
-        rospy.loginfo("Sending goal 1 ...")
-        move_arm(pub_command, loop_rate, Q[0][0][1], 4.0, 4.0)
-
-        gripper(pub_command, loop_rate, suction_on)
-        # Delay to make sure suction cup has grasped the block
-        time.sleep(1.0)
-
-        rospy.loginfo("Sending goal 2 ...")
-        move_arm(pub_command, loop_rate, Q[1][1][1], 4.0, 4.0)
-
-        rospy.loginfo("Sending goal 3 ...")
-        move_arm(pub_command, loop_rate, Q[2][0][1], 4.0, 4.0)
-
-        loop_count = loop_count - 1
-
-    gripper(pub_command, loop_rate, suction_off)
-
-
-
-    ############### Your Code End Here ###############
+    rospy.loginfo("Destination is reached!")
+    sys.exit()
 
 
 if __name__ == '__main__':
