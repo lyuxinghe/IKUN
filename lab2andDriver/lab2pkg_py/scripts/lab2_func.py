@@ -89,7 +89,7 @@ def lab_fk(theta1, theta2, theta3, theta4, theta5, theta6):
 	t5 = expm(theta5*S[4])
 	t6 = expm(theta6*S[5])
 
-	T = np.dot(t1, np.dot(t1, np.dot(t3, np.dot(t4, np.dot(t5, np.dot(t6, M))))))
+	T = np.dot(M, np.dot(t6, np.dot(t5, np.dot(t4, np.dot(t3, np.dot(t1, t1))))))
 
 	# ==============================================================#
 

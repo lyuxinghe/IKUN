@@ -18,6 +18,7 @@ import sys
 from lab2_header import *
 from blob_search import *
 from lab2_func import *
+from math import pi
 
 # 20Hz
 SPIN_RATE = 20
@@ -40,8 +41,20 @@ current_io_0 = False
 current_position_set = False
 
 Q = None
+go_away = [270*pi/180.0, -90*pi/180.0, 90*pi/180.0, -90*pi/180.0, -90*pi/180.0, 135*pi/180.0]
+z_height = 0.037
+yaw = 90
+P = []
 
 
+"""
+Whenever ur3/gripper_input publishes info this callback function is called.
+"""
+def input_callback(msg):
+
+    global digital_in_0
+    digital_in_0 = msg.DIGIN
+    digital_in_0 = digital_in_0 & 1 # Only look at least significant bit, meaning index 0
 
 """
 Whenever ur3/position publishes info, this callback function is called.
@@ -156,16 +169,34 @@ def move_arm(pub_cmd, loop_rate, dest, vel, accel):
     return error
 
 
-
-def move_block(pub_cmd, loop_rate, start_loc, start_height, \
-               end_loc, end_height):
-    global Q
-
-    ### Hint: Use the Q array to map out your towers by location and "height".
+def move_block(pub_cmd, loop_rate, start_xw_yw_zw, target_xw_yw_zw, vel, accel):
 
     error = 0
 
+    move_arm(pub_cmd, loop_rate, go_away, vel, accel)
+    time.sleep(0.3)
+    move_arm(pub_cmd, loop_rate, start_xw_yw_zw, vel, accel)
+    time.sleep(0.3)
+    gripper(pub_cmd, loop_rate, suction_on)
+    time.sleep(0.3)
 
+    if digital_in_0 == 0:
+        error = 1
+        move_arm(pub_cmd, loop_rate, go_away, 4.0, 4.0)
+        gripper(pub_cmd, loop_rate, suction_off)
+        time.sleep(0.3)
+        print("No block found! Moving to the next position")
+        return error
+
+    move_arm(pub_cmd, loop_rate, go_away, vel, accel)
+    time.sleep(0.3)
+
+    move_arm(pub_cmd, loop_rate, target_xw_yw_zw, vel, accel)
+    time.sleep(0.3)
+    gripper(pub_cmd, loop_rate, suction_off)
+    time.sleep(0.3)
+    move_arm(pub_cmd, loop_rate, go_away, vel, accel)
+    time.sleep(0.3)
 
     return error
 
@@ -192,13 +223,14 @@ class ImageConverter:
         img_width = data.width
 
         P = data.P
-        print(data)
+        #print(data)
         
 
     def image_callback(self, data):
 
         global xw_yw_G # store found green blocks in this list
         global xw_yw_R # store found yellow blocks in this list
+        global P
 
         try:
           # Convert ROS image to OpenCV image
@@ -227,37 +259,16 @@ def main():
     global home
     global Q
     global SPIN_RATE
+    global z_height
+    global yaw
+    global go_away
+    global xw_yw_G
+    global xw_yw_R
 
     # Parser
     parser = argparse.ArgumentParser(description='Please specify if using simulator or real robot')
     parser.add_argument('--simulator', type=str, default='True')
     args = parser.parse_args()
-
-    # Definition of our tower
-
-    # 2D layers (top view)
-
-    # Layer (Above blocks)
-    # | Q[0][2][1] Q[1][2][1] Q[2][2][1] |   Above third block
-    # | Q[0][1][1] Q[1][1][1] Q[2][1][1] |   Above point of second block
-    # | Q[0][0][1] Q[1][0][1] Q[2][0][1] |   Above point of bottom block
-
-    # Layer (Gripping blocks)
-    # | Q[0][2][0] Q[1][2][0] Q[2][2][0] |   Contact point of third block
-    # | Q[0][1][0] Q[1][1][0] Q[2][1][0] |   Contact point of second block
-    # | Q[0][0][0] Q[1][0][0] Q[2][0][0] |   Contact point of bottom block
-
-    # First index - From left to right position A, B, C
-    # Second index - From "bottom" to "top" position 1, 2, 3
-    # Third index - From gripper contact point to "in the air" point
-
-    # How the arm will move (Suggestions)
-    # 1. Go to the "above (start) block" position from its base position
-    # 2. Drop to the "contact (start) block" position
-    # 3. Rise back to the "above (start) block" position
-    # 4. Move to the destination "above (end) block" position
-    # 5. Drop to the corresponding "contact (end) block" position
-    # 6. Rise back to the "above (end) block" position
 
     # Initialize rospack
     rospack = rospkg.RosPack()
@@ -290,12 +301,10 @@ def main():
     # Initialize subscriber to ur3/position and callback fuction
     # each time data is published
     sub_position = rospy.Subscriber('ur3/position', position, position_callback)
-
-    ic = ImageConverter(SPIN_RATE)
-    time.sleep(5)
+    sub_input = rospy.Subscriber('ur3/gripper_input', gripper_input, input_callback)
 
     dest = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-
+    '''
     xWgrip = input("Please input xWgrip:")
     yWgrip = input("Please input yWgrip:")
     zWgrip = input("Please input zWgrip:")
@@ -303,7 +312,7 @@ def main():
 
 
     dest = lab_invk(float(xWgrip), float(yWgrip), float(zWgrip), float(yaw_WgripDegree))
-	
+	'''
     vel = 4.0
     accel = 4.0
 
@@ -314,9 +323,22 @@ def main():
     # Initialize the rate to publish to ur3/command
     loop_rate = rospy.Rate(SPIN_RATE)
 
-    move_arm(pub_command, loop_rate, dest, vel, accel) 
+    move_arm(pub_command, loop_rate, go_away, vel, accel) 
 
-    rospy.loginfo("Destination is reached!")
+    rospy.loginfo("move to go away")
+    
+    ic = ImageConverter(SPIN_RATE)
+    time.sleep(5)
+
+    print("xw_yw_R", xw_yw_R)
+    print("xw_yw_G", xw_yw_G)
+
+    block_count = 0
+    for pos in xw_yw_R:
+        print(pos)
+        move_block(pub_command, loop_rate, lab_invk(pos[0], pos[1], z_height, yaw), lab_invk(pos[0], pos[1], z_height, yaw), vel, accel)
+        block_count += 1
+
     sys.exit()
 
 

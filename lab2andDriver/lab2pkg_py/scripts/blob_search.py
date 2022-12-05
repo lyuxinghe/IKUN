@@ -9,7 +9,7 @@ def IMG2W(col, row, P):
     col = float(col - img_width / 2)
     row = float(row - img_height / 2)
     world_coord = [col / pix_over_world, row / pix_over_world]
-    print("calculated world coordinate: ", world_coord)
+    #print("calculated world coordinate: ", world_coord)
     return world_coord
 
 def blob_search(image_raw, color, P):
@@ -72,7 +72,7 @@ def blob_search(image_raw, color, P):
         print("No block found!")
     else:
         # Convert image coordinates to global world coordinate using IM2W() function
-        print("centroids: ", blob_image_center)
+        #print("centroids: ", blob_image_center)
         for i in range(num_blobs):
             xw_yw.append(IMG2W(blob_image_center[i][0], blob_image_center[i][1], P))
             #print(IMG2W(blob_image_center[i][0], blob_image_center[i][1]))
