@@ -1,8 +1,0 @@
-prefix=/home/ur3/ece470/catkin_ws/install
-
-Name: cxk_gazebo
-Description: Description of cxk_gazebo
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
