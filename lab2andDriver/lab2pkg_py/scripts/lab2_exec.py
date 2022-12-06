@@ -45,6 +45,8 @@ go_away = [270*pi/180.0, -90*pi/180.0, 90*pi/180.0, -90*pi/180.0, -90*pi/180.0, 
 z_height = 0.037
 yaw = 90
 P = []
+red_bin = [0.2, 0.3]
+green_bin = [0.2, 0.5]
 
 
 """
@@ -176,7 +178,7 @@ def move_block(pub_cmd, loop_rate, start_xw_yw_zw, target_xw_yw_zw, vel, accel):
     move_arm(pub_cmd, loop_rate, go_away, vel, accel)
     time.sleep(0.3)
     move_arm(pub_cmd, loop_rate, start_xw_yw_zw, vel, accel)
-    time.sleep(0.3)
+    time.sleep(0.5)
     gripper(pub_cmd, loop_rate, suction_on)
     time.sleep(0.3)
 
@@ -192,7 +194,7 @@ def move_block(pub_cmd, loop_rate, start_xw_yw_zw, target_xw_yw_zw, vel, accel):
     time.sleep(0.3)
 
     move_arm(pub_cmd, loop_rate, target_xw_yw_zw, vel, accel)
-    time.sleep(0.3)
+    time.sleep(0.5)
     gripper(pub_cmd, loop_rate, suction_off)
     time.sleep(0.3)
     move_arm(pub_cmd, loop_rate, go_away, vel, accel)
@@ -264,6 +266,8 @@ def main():
     global go_away
     global xw_yw_G
     global xw_yw_R
+    global red_bin
+    global green_bin
 
     # Parser
     parser = argparse.ArgumentParser(description='Please specify if using simulator or real robot')
@@ -333,11 +337,13 @@ def main():
     print("xw_yw_R", xw_yw_R)
     print("xw_yw_G", xw_yw_G)
 
-    block_count = 0
     for pos in xw_yw_R:
         print(pos)
-        move_block(pub_command, loop_rate, lab_invk(pos[0], pos[1], z_height, yaw), lab_invk(pos[0], pos[1], z_height, yaw), vel, accel)
-        block_count += 1
+        move_block(pub_command, loop_rate, lab_invk(pos[0], pos[1], z_height, yaw), lab_invk(red_bin[0], red_bin[1], z_height, yaw), vel, accel)
+
+    for pos in xw_yw_G:
+        print(pos)
+        move_block(pub_command, loop_rate, lab_invk(pos[0], pos[1], z_height, yaw), lab_invk(green_bin[0], green_bin[1], z_height, yaw), vel, accel)
 
     sys.exit()
 

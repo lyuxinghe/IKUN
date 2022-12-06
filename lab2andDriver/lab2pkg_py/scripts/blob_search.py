@@ -8,7 +8,7 @@ def IMG2W(col, row, P):
     pix_over_world = 456
     col = float(col - img_width / 2)
     row = float(row - img_height / 2)
-    world_coord = [col / pix_over_world, row / pix_over_world]
+    world_coord = [row / pix_over_world, col / pix_over_world]
     #print("calculated world coordinate: ", world_coord)
     return world_coord
 
